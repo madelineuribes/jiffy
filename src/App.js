@@ -25,6 +25,7 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      loading: false,
       searchTerm: '',
       hintText: '',
       //array of gifs
@@ -34,6 +35,9 @@ class App extends Component {
 
   // function that searches api using fetch and puts search term into query url
   searchGiphy = async searchTerm => {
+    this.setState({
+      loading: true
+    })
     //fetch
     try {
       //use await keyword to wait for response to come back
@@ -52,7 +56,8 @@ class App extends Component {
         ...prevState,
         gif: randomGif,
         // use spread to take previous gifs and spread them out, adding new gif to the end
-        gifs: [...prevState.gifs, randomGif]
+        gifs: [...prevState.gifs, randomGif],
+        loading: false
       }));
 
       // if fetch fails, catch it 
