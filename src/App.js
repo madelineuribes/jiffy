@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
+import loader from './images/loader.svg';
 
 const Header = () => (
   <div className="header grid">
     <h1 className="title">Jiffy</h1>
+  </div>
+);
+
+const UserHint = ({ loading, hintText }) => (
+  <div className='user-hint'>
+    {loading ? <img className="block mx-auto" src={loader} alt='' /> :
+      hintText}
   </div>
 );
 
@@ -11,7 +19,8 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      searchTerm: ''
+      searchTerm: '',
+      hintText: ''
     };
   }
 
@@ -21,11 +30,10 @@ class App extends Component {
       // take old props and spread them out here
       ...prevState,
       // then we overwrite the one we want after
-      searchTerm: value
+      searchTerm: value,
+      // set hint text only when we have more than 2
+      hintText: value.length > 2 ? `Hit enter to search ${value}` : ''
     }));
-
-    if (value.length > 2) {
-    }
   };
 
   // when we have 2 or more characters
@@ -48,6 +56,7 @@ class App extends Component {
             onKeyPress={this.handleKeyPress}
             value={searchTerm} />
         </div>
+        <UserHint {...this.state} />
       </div>
     );
   }
