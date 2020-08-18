@@ -7,13 +7,29 @@ const Header = () => (
 );
 
 class App extends Component {
+
+  handleChange = event => {
+    const { value } = event.target;
+    if (value.length > 2) {
+
+    }
+  };
+
+  // when we have two or more characters
+  // and we pressed enter, we want to run a search 
+
+  handleKeyPress = event => {
+    console.log(event.key);
+  };
+
   render() {
     return (
       <div className="page">
         <Header />
         <div className='search grid'>
           {}
-          <imput className='input grid-item' placeholder="Type something" />
+          <input className='input grid-item' placeholder="Type something" onChange={this.handleChange}
+            onKeyPress={this.handleKeyPress} />
         </div>
       </div>
     );
