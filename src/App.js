@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import loader from './images/loader.svg';
 
+const randomChoice = arr => {
+  const randIndex = Math.floor(Math.random() * arr.length);
+  return arr[randIndex];
+};
+
 const Header = () => (
   <div className="header grid">
     <h1 className="title">Jiffy</h1>
@@ -21,7 +26,8 @@ class App extends Component {
     this.state = {
       searchTerm: '',
       hintText: '',
-      gif: null
+      //array of gifs
+      gifs: []
     };
   }
 
@@ -36,9 +42,16 @@ class App extends Component {
       //convert response into json
       const { data } = await response.json();
 
+      //grab random result from our images
+      const randomGif = randomChoice(data);
+
+      console.log({ randomGif });
+
       this.setState((prevState, props) => ({
         ...prevState,
-        gif: data[0]
+        gif: randomGif,
+        // use spread to take previous gifs and spread them out, adding new gif to the end
+        gifs: [...prevState.gifs, randomGif]
       }));
 
       // if fetch fails, catch it 
@@ -77,8 +90,11 @@ class App extends Component {
 
         <div className='search grid'>
 
-          {gif && <video className='grid-item video' autoPlay loop
-            src={gif.images.original.mp4} />}
+          {/*loop over our array of gif images from our state, create multiple videos from it*/}
+          {this.state.gifs.map(gif => (
+            <video className='grid-item video' autoPlay loop src=
+              {gif.images.original.mp4} />
+          ))}
 
           <input className='input grid-item' placeholder="Type something" onChange={this.handleChange}
             onKeyPress={this.handleKeyPress}
