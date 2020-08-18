@@ -24,6 +24,21 @@ class App extends Component {
     };
   }
 
+  // function that searches api using fetch and puts search term into query url
+  searchGiphy = async searchTerm => {
+    //fetch
+    try {
+      //use await keyword to wait for response to come back
+      const response = await fetch('https://api.giphy.com/v1/gifs/search?api_key=47XQWNYAyTmR6PwYvVWYHtCmxLLQSg1v&q=&limit=25&offset=0&rating=g&lang=en');
+      //convert response into json
+      const data = await response.json();
+      console.log(data);
+      // if fetch fails, catch it 
+    } catch (error) {
+
+    }
+  }
+
   handleChange = event => {
     const { value } = event.target;
     this.setState((prevState, props) => ({
@@ -41,7 +56,8 @@ class App extends Component {
   handleKeyPress = event => {
     const { value } = event.target
     if (value.length > 2 && event.key === 'Enter') {
-      alert(`search for ${value}`);
+      // call searchGiphy
+      this.searchGiphy(value)
     }
   };
 
