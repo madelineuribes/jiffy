@@ -47,6 +47,11 @@ class App extends Component {
       //convert response into json
       const { data } = await response.json();
 
+      //check if array is empty, throw error if it is
+      if (!data.length) {
+        throw `Nothing found for ${searchTerm}`
+      }
+
       //grab random result from our images
       const randomGif = randomChoice(data);
 
@@ -62,9 +67,13 @@ class App extends Component {
 
       // if fetch fails, catch it 
     } catch (error) {
-
+      this.setState((prevState, props) => ({
+        ...prevState,
+        hintText: error,
+        loading: false
+      }));
     }
-  }
+  };
 
   handleChange = event => {
     const { value } = event.target;
