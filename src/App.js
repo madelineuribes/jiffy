@@ -111,6 +111,7 @@ class App extends Component {
       hintText: '',
       gifs: []
     }));
+    this.textInput.focus();
   };
 
   render() {
@@ -127,9 +128,15 @@ class App extends Component {
             <Gif {...gif} />
           ))}
 
-          <input className='input grid-item' placeholder="Type something" onChange={this.handleChange}
+          <input className='input grid-item'
+            placeholder="Type something"
+            onChange={this.handleChange}
             onKeyPress={this.handleKeyPress}
-            value={searchTerm} />
+            value={searchTerm}
+            ref={(input) => {
+              this.textInput = input;
+            }}
+          />
         </div>
         <UserHint {...this.state} />
       </div>
