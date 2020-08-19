@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import loader from './images/loader.svg';
+import clearButton from './images/close-icon.svg';
 import Gif from './Gif';
 
 const randomChoice = arr => {
@@ -7,9 +8,14 @@ const randomChoice = arr => {
   return arr[randIndex];
 };
 
-const Header = () => (
+const Header = ({ clearSearch, hasResults }) => (
   <div className="header grid">
-    <h1 className="title">Jiffy</h1>
+    {hasResults ? (
+      <button onClick={clearSearch}>
+        <img src={clearButton} alt="clear button" />
+      </button>
+    ) : (<h1 className="title" onClick={clearSearch}>Jiffy</h1>
+      )}
   </div>
 );
 
@@ -59,10 +65,10 @@ class App extends Component {
 
       this.setState((prevState, props) => ({
         ...prevState,
-        gif: randomGif,
         // use spread to take previous gifs and spread them out, adding new gif to the end
         gifs: [...prevState.gifs, randomGif],
-        loading: false
+        loading: false,
+        hintText: `Hit enter to see more ${searchTerm}`
       }));
 
       // if fetch fails, catch it 
@@ -97,11 +103,22 @@ class App extends Component {
     }
   };
 
+  // reset state be clearing everything out and making it default
+  clearSearch = () => {
+    this.setState((prevState, props) => ({
+      ...prevState,
+      searchTerm: '',
+      hintText: '',
+      gifs: []
+    }));
+  };
+
   render() {
-    const { searchTerm, gif } = this.state;
+    const { searchTerm, gifs } = this.state;
+    const hasResults = gifs.length;
     return (
       <div className="page">
-        <Header />
+        <Header clearSearch={this.clearSearch} hasResults={hasResults} />
 
         <div className='search grid'>
 
